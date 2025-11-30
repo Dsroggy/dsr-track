@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>DSR Trade • TV Pro Terminal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <!-- TradingView official chart script -->
+  <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="left">
+        <img src="logo.png" class="logo" alt="DSR Logo" />
+        <div>
+          <h1>DSR Trade TV Pro</h1>
+          <p>TradingView style live chart + Fake Money Paper Trading</p>
+        </div>
+      </div>
+      <div class="center-metrics">
+        <div class="metric">
+          <span class="label">Balance</span>
+          <span id="balance" class="value">100000.00 ₹</span>
+        </div>
+        <div class="metric">
+          <span class="label">Equity</span>
+          <span id="equity" class="value">100000.00 ₹</span>
+        </div>
+        <div class="metric">
+          <span class="label">Realized P&amp;L</span>
+          <span id="realizedPnl" class="value">0.00 ₹</span>
+        </div>
+        <div class="metric">
+          <span class="label">Today P&amp;L</span>
+          <span id="todayPnl" class="value">0.00 ₹</span>
+        </div>
+      </div>
+      <div class="right">
+        <div class="metric small">
+          <span class="label">LTP</span>
+          <span id="currentPrice" class="value">-</span>
+        </div>
+        <div class="fund-buttons">
+          <button id="addFundsBtn">Add Funds</button>
+          <button id="withdrawFundsBtn">Withdraw</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="grid">
+      <!-- Left: chart -->
+      <section class="left-col">
+        <div class="chart-top">
+          <div class="select-row">
+            <label>
+              Symbol:
+              <select id="symbolSelect">
+                <option value="BINANCE:BTCUSDT">BTCUSDT (Binance)</option>
+                <option value="BINANCE:ETHUSDT">ETHUSDT (Binance)</option>
+                <option value="NSE:NIFTY">NIFTY (NSE)</option>
+                <option value="NSE:BANKNIFTY">BANKNIFTY (NSE)</option>
+              </select>
+            </label>
+            <label>
+              Timeframe:
+              <select id="intervalSelect">
+                <option value="1">1m</option>
+                <option value="5">5m</option>
+                <option value="15" selected>15m</option>
+                <option value="60">1H</option>
+                <option value="240">4H</option>
+                <option value="D">1D</option>
+              </select>
+            </label>
+          </div>
+          <p class="hint">
+            Chart = TradingView live | Trades &amp; P&amp;L = fake practice price (local simulation).
+          </p>
+        </div>
+        <div id="tv_chart" class="chart-container"></div>
+      </section>
+
+      <!-- Right: trading panel -->
+      <section class="right-col">
+        <div class="ticket">
+          <h2>New Order</h2>
+          <div class="row">
+            <label>Side</label>
+            <select id="sideSelect">
+              <option value="LONG">Long (Buy)</option>
+              <option value="SHORT">Short (Sell)</option>
+            </select>
+          </div>
+          <div class="row">
+            <label>Qty</label>
+            <input type="number" id="qtyInput" value="1" min="1" />
+          </div>
+          <div class="row">
+            <label>Order Type</label>
+            <select id="orderTypeSelect">
+              <option value="MARKET">Market</option>
+              <option value="LIMIT">Limit</option>
+            </select>
+          </div>
+          <div class="row">
+            <label>Entry Price (Limit)</label>
+            <input type="number" id="entryPriceInput" placeholder="for LIMIT" />
+          </div>
+          <div class="row">
+            <label>Stop Loss</label>
+            <input type="number" id="slInput" placeholder="optional" />
+          </div>
+          <div class="row">
+            <label>Target</label>
+            <input type="number" id="tpInput" placeholder="optional" />
+          </div>
+          <div class="row">
+            <label>Risk %</label>
+            <input type="number" id="riskPercentInput" placeholder="e.g. 1" />
+          </div>
+          <div class="row checkbox">
+            <label><input type="checkbox" id="trailingCheckbox" /> Trailing SL</label>
+          </div>
+          <div class="buttons-row">
+            <button id="buyBtn" class="buy">Buy / Long</button>
+            <button id="sellBtn" class="sell">Sell / Short</button>
+          </div>
+          <div class="ticket-footer">
+            <span>Open Positions: <span id="openCount">0</span></span>
+          </div>
+        </div>
+
+        <div class="rr-panel">
+          <div class="rr-block">
+            <h3>RR Long</h3>
+            <div class="rr-row">
+              <span>E:</span><input type="number" id="longEntry" />
+            </div>
+            <div class="rr-row">
+              <span>SL:</span><input type="number" id="longSl" />
+            </div>
+            <div class="rr-row">
+              <span>TP:</span><input type="number" id="longTarget" />
+            </div>
+            <div class="rr-row">
+              <span>R:R</span><span id="longRR">-</span>
+            </div>
+          </div>
+          <div class="rr-block">
+            <h3>RR Short</h3>
+            <div class="rr-row">
+              <span>E:</span><input type="number" id="shortEntry" />
+            </div>
+            <div class="rr-row">
+              <span>SL:</span><input type="number" id="shortSl" />
+            </div>
+            <div class="rr-row">
+              <span>TP:</span><input type="number" id="shortTarget" />
+            </div>
+            <div class="rr-row">
+              <span>R:R</span><span id="shortRR">-</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bottom-panel">
+          <div class="tabs">
+            <button class="tab active" data-tab="positions">Positions</button>
+            <button class="tab" data-tab="orders">Order History</button>
+            <button class="tab" data-tab="portfolio">Portfolio</button>
+            <button class="tab" data-tab="stats">Summary</button>
+          </div>
+
+          <div class="tab-content active" id="tab-positions">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Side</th>
+                  <th>Qty</th>
+                  <th>Entry</th>
+                  <th>SL</th>
+                  <th>TP</th>
+                  <th>P&amp;L</th>
+                  <th>Close</th>
+                </tr>
+              </thead>
+              <tbody id="positionsBody"></tbody>
+            </table>
+          </div>
+
+          <div class="tab-content" id="tab-orders">
+            <table>
+              <thead>
+                <tr>
+                  <th>Time</th>
+                  <th>Side</th>
+                  <th>Qty</th>
+                  <th>Entry</th>
+                  <th>Exit</th>
+                  <th>P&amp;L</th>
+                </tr>
+              </thead>
+              <tbody id="ordersBody"></tbody>
+            </table>
+          </div>
+
+          <div class="tab-content" id="tab-portfolio">
+            <table>
+              <thead>
+                <tr>
+                  <th>Net Qty</th>
+                  <th>Avg Price</th>
+                  <th>Unrealized</th>
+                </tr>
+              </thead>
+              <tbody id="portfolioBody"></tbody>
+            </table>
+          </div>
+
+          <div class="tab-content" id="tab-stats">
+            <div class="stats-grid">
+              <div>
+                <h3>Total Trades</h3>
+                <p id="statTotalTrades">0</p>
+              </div>
+              <div>
+                <h3>Win Rate</h3>
+                <p id="statWinRate">0%</p>
+              </div>
+              <div>
+                <h3>Best Trade</h3>
+                <p id="statBestTrade">0.00 ₹</p>
+              </div>
+              <div>
+                <h3>Worst Trade</h3>
+                <p id="statWorstTrade">0.00 ₹</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
