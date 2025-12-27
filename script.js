@@ -5,8 +5,8 @@ const chatArea = document.getElementById("chatArea");
 /* =========================
    🔑 OPENAI / OPENROUTER API
    ========================= */
-const API_KEY = "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";
-const API_URL = "https://openrouter.ai/api/v1/chat/completions";
+const API_KEY = "AIzaSyC6rj295SBMrbvjyTnZ-uDl4vDJB0PmhkY";
+const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
 
 /* =========================
    💾 CHAT HISTORY
@@ -171,3 +171,4 @@ window.addEventListener("load", () => {
     addMessage(msg.text, msg.type, false);
   });
 });
+
