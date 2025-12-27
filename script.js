@@ -5,8 +5,8 @@ const chatArea = document.getElementById("chatArea");
 /* =========================
    🔑 OPENAI / OPENROUTER API
    ========================= */
-const API_KEY = "AIzaSyC6rj295SBMrbvjyTnZ-uDl4vDJB0PmhkY";
-const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
+const API_KEY = "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";
+const API_URL = "https://api.groq.com/openai/v1/chat/completions";
 
 /* =========================
    💾 CHAT HISTORY
@@ -171,4 +171,5 @@ window.addEventListener("load", () => {
     addMessage(msg.text, msg.type, false);
   });
 });
+
 
