@@ -1,0 +1,77 @@
+* {
+  box-sizing: border-box;
+  font-family: system-ui, Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: #0b0f17;
+  color: #fff;
+  height: 100vh;
+}
+
+/* FORCE MOBILE APP LAYOUT */
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  max-width: 420px;     /* 👈 MOBILE WIDTH */
+  margin: 0 auto;       /* CENTER ON DESKTOP */
+  background: #0b0f17;
+}
+
+/* MAIN */
+.main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* CHAT */
+.chat-area {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.welcome {
+  text-align: center;
+  margin-top: 35%;
+}
+
+.center-logo {
+  width: 160px;
+  max-width: 80%;
+}
+
+.welcome h1 {
+  font-size: 20px;
+  margin-top: 12px;
+  opacity: 0.85;
+}
+
+/* INPUT */
+.input-box {
+  display: flex;
+  padding: 10px;
+  background: #020617;
+}
+
+.input-box input {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  font-size: 15px;
+}
+
+.input-box button {
+  margin-left: 8px;
+  padding: 0 16px;
+  border-radius: 10px;
+  border: none;
+  background: #2563eb;
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+}
