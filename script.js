@@ -5,8 +5,8 @@ const chatArea = document.getElementById("chatArea");
 /* =========================
    🔑 OPENAI / OPENROUTER API
    ========================= */
-const API_KEY = "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";
-const API_URL = "https://api.groq.com/openai/v1/chat/completions";
+const API_KEY = "https://api.dsr0ggy.com/v1/";
+const API_URL = "https://api.dsr0ggy.com/v1/query";
 
 /* =========================
    💾 CHAT HISTORY
